@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+
+<html class="light" lang="pt-br"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Contêineres e Kubernetes - Guia Técnico</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary": "#ffffff",
+                        "on-primary-container": "#fffbff",
+                        "on-secondary-container": "#740041",
+                        "on-surface": "#1f1a1e",
+                        "on-secondary-fixed": "#3e0020",
+                        "secondary-fixed": "#ffd9e4",
+                        "outline": "#8f6f73",
+                        "inverse-primary": "#ffb2be",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-fixed-variant": "#5a2a9c",
+                        "on-tertiary-container": "#fffbff",
+                        "primary-fixed": "#ffd9de",
+                        "surface-container-low": "#fcf1f7",
+                        "secondary": "#a82d68",
+                        "tertiary-fixed-dim": "#d7baff",
+                        "secondary-container": "#ff73ae",
+                        "background": "#fff7fa",
+                        "on-tertiary": "#ffffff",
+                        "primary-fixed-dim": "#ffb2be",
+                        "error": "#ba1a1a",
+                        "on-primary-fixed": "#400014",
+                        "on-primary-fixed-variant": "#900038",
+                        "surface-bright": "#fff7fa",
+                        "surface-container-highest": "#eae0e6",
+                        "on-surface-variant": "#5b3f43",
+                        "inverse-surface": "#342f33",
+                        "surface-dim": "#e2d7dd",
+                        "outline-variant": "#e4bdc2",
+                        "primary": "#b80049",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-container": "#e2165f",
+                        "inverse-on-surface": "#f9eef4",
+                        "secondary-fixed-dim": "#ffb0cc",
+                        "on-secondary": "#ffffff",
+                        "tertiary-container": "#8a5cce",
+                        "on-tertiary-fixed": "#280056",
+                        "surface-tint": "#bc004b",
+                        "surface": "#fff7fa",
+                        "on-error": "#ffffff",
+                        "surface-container": "#f6ebf1",
+                        "on-background": "#1f1a1e",
+                        "tertiary-fixed": "#eddcff",
+                        "surface-container-high": "#f0e5eb",
+                        "tertiary": "#7042b3",
+                        "on-secondary-fixed-variant": "#890f50",
+                        "on-error-container": "#93000a",
+                        "surface-variant": "#eae0e6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "64px",
+                        "lg": "24px",
+                        "gutter": "24px",
+                        "md": "16px",
+                        "margin-mobile": "16px",
+                        "xl": "32px",
+                        "sm": "12px",
+                        "base": "8px",
+                        "xs": "4px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "title-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "display": ["Inter"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "code": ["monospace"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "title-lg": ["20px", {"lineHeight": "28px", "fontWeight": "500"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                        "display": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "code": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { background-color: #fdf2f8; scroll-behavior: smooth; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; vertical-align: middle; }
+        .glass-card { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(8px); border: 1px solid #e4bdc2; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-md text-on-surface">
+<!-- TopAppBar -->
+<header class="w-full sticky top-0 z-50 bg-surface dark:bg-background shadow-sm">
+<div class="flex justify-between items-center px-margin-desktop py-md max-w-full mx-auto mobile:px-margin-mobile">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary" data-icon="terminal">terminal</span>
+<h1 class="font-display text-headline-md font-bold text-primary dark:text-primary-fixed-dim">Contêineres e Kubernetes</h1>
+</div>
+<div class="hidden md:flex items-center bg-secondary-container px-md py-xs rounded-full">
+<span class="font-label-md text-label-md text-on-secondary-container">Maria Clara Brindeiro · 35 · INFOR-2</span>
+</div>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-margin-desktop mobile:px-margin-mobile mt-xl space-y-xl">
+<!-- Hero Section / Introduction -->
+<section class="grid grid-cols-1 md:grid-cols-12 gap-gutter items-center">
+<div class="md:col-span-7 space-y-md">
+<span class="inline-block px-sm py-xs bg-primary-fixed text-on-primary-fixed rounded-full font-label-md text-label-md">INTRODUÇÃO</span>
+<h2 class="font-display text-display text-primary leading-tight">A Revolução dos Contêineres</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">
+                    Imagine o porto de uma cidade. Antes dos contêineres padrão, carregar navios era um caos logístico. Contêineres de software aplicam a mesma lógica: empacotam código e dependências em uma unidade padrão que roda em qualquer lugar.
+                </p>
+<div class="p-lg bg-surface-container-low rounded-xl border border-outline-variant">
+<h3 class="font-title-lg text-title-lg text-secondary mb-base flex items-center gap-xs">
+<span class="material-symbols-outlined">directions_boat</span> A Analogia do Navio
+                    </h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-md">
+<div class="space-y-xs">
+<span class="font-label-md text-label-md text-primary">Virtual Machines (VM)</span>
+<p class="text-sm">Como transportar casas inteiras em um navio. Pesado, lento e exige seu próprio sistema operacional completo.</p>
+</div>
+<div class="space-y-xs">
+<span class="font-label-md text-label-md text-primary">Contêineres</span>
+<p class="text-sm">Como caixas metálicas padrão. Leves, compartilham o mesmo "motor" (Kernel) e podem ser empilhados aos milhares.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="md:col-span-5">
+<div class="aspect-square rounded-3xl overflow-hidden shadow-xl border-4 border-white">
+<img class="w-full h-full object-cover" data-alt="A futuristic and stylized 3D render of a massive cargo ship carrying glowing pink and magenta translucent containers in a dark neon ocean. The lighting is dramatic, using vibrant pink highlights against deep shadows to emphasize a modern technology aesthetic. The atmosphere is professional yet high-energy, representing the efficiency of modern cloud computing and software logistics." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBt96qq5eusH6YqBb7giViQYIouPa2p_NbeHZX0SC2XZgMR-0Cl9CTAOqK7EtaVuJN6l52KV0DFYo4-vl67Yu6u4I860IGrof6qGUi817euXfcTB8q94XNw4hpvCC7jlW1BEKbpXj6SXWURm4sJgBgLtjkMvm-y7sIaAFRBhEq9wVUXsxJdtKmMboWDHEQW-o5CSS81LcRlqfPDl0U-6SGnSvnV8PXHvSlzyRU8_uM2oIVAzLHOnBBYJVQy2SgyyGeojDqsEWEaFeXU"/>
+</div>
+</div>
+</section>
+<!-- Advantages - Bento Grid -->
+<section class="space-y-lg">
+<div class="text-center">
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Vantagens Tecnológicas</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="glass-card p-xl rounded-xl hover:shadow-lg transition-all duration-300 group">
+<div class="w-12 h-12 bg-primary-container rounded-lg flex items-center justify-center mb-md group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-white text-3xl" data-icon="move_up">move_up</span>
+</div>
+<h3 class="font-title-lg text-title-lg text-primary mb-sm">Portabilidade</h3>
+<p class="text-on-surface-variant">"Roda na minha máquina, roda no servidor". O contêiner garante que o ambiente seja idêntico em qualquer estágio do pipeline.</p>
+</div>
+<div class="glass-card p-xl rounded-xl hover:shadow-lg transition-all duration-300 group">
+<div class="w-12 h-12 bg-secondary-container rounded-lg flex items-center justify-center mb-md group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-white text-3xl" data-icon="speed">speed</span>
+</div>
+<h3 class="font-title-lg text-title-lg text-secondary mb-sm">Leveza</h3>
+<p class="text-on-surface-variant">Diferente de VMs, contêineres não emulam hardware. Eles iniciam em milissegundos e utilizam frações da memória RAM.</p>
+</div>
+<div class="glass-card p-xl rounded-xl hover:shadow-lg transition-all duration-300 group">
+<div class="w-12 h-12 bg-tertiary-container rounded-lg flex items-center justify-center mb-md group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-white text-3xl" data-icon="dynamic_feed">dynamic_feed</span>
+</div>
+<h3 class="font-title-lg text-title-lg text-tertiary mb-sm">Escalabilidade</h3>
+<p class="text-on-surface-variant">Precisa de mais poder? Basta subir mais réplicas do mesmo contêiner. O sistema cresce e diminui conforme a demanda.</p>
+</div>
+</div>
+</section>
+<!-- Kubernetes Orchestration -->
+<section class="grid grid-cols-1 md:grid-cols-2 gap-xl items-center py-xl">
+<div class="order-2 md:order-1">
+<div class="relative">
+<div class="absolute -inset-4 bg-primary/10 blur-3xl rounded-full"></div>
+<img class="relative z-10 rounded-2xl shadow-2xl grayscale hover:grayscale-0 transition-all duration-700" data-alt="A professional symphony conductor seen from behind, leading a large orchestra with a baton. The scene is artistically filtered with soft pink and magenta atmospheric lighting, overlaying digital node connections and data patterns on the musicians to symbolize technical orchestration. The mood is majestic and highly organized, reflecting the control and precision of Kubernetes." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvSs9SeqWGdzvX_UtsxwSrdRQzq0yJ9lA0JFpwIqOPVTW_8rwzgeFXMmSrhs0xrQHCfAx5PXbkJytNuyntHyOAxBpEWoXz3Y_8W_CGXu2va9qKYs1H2fPtdf_SNiz-QcDk9JdTHHHB6F838LrjeG--Sz39Id9iAPBb3DFqbCEjcMYx7QSYBtxmP6AyUD0Le1iNiP9zMbQOWGh6PV6NHdmNZAtrcQQAzbP1dhSs62Pi_gDE-AjGHB8z_sYhPRlQvmVVkCOS70WdSXR7"/>
+</div>
+</div>
+<div class="order-1 md:order-2 space-y-md">
+<h2 class="font-headline-lg text-headline-lg text-primary">Kubernetes: O Maestro</h2>
+<p class="font-body-lg text-body-lg">
+                    Se um contêiner é um músico individual, o Kubernetes (K8s) é o <strong>Maestro</strong>. Em sistemas complexos com centenas de contêineres, você precisa de alguém para:
+                </p>
+<ul class="space-y-sm">
+<li class="flex items-start gap-sm">
+<span class="material-symbols-outlined text-secondary mt-1">check_circle</span>
+<span><strong>Self-healing:</strong> Reiniciar contêineres que falham.</span>
+</li>
+<li class="flex items-start gap-sm">
+<span class="material-symbols-outlined text-secondary mt-1">check_circle</span>
+<span><strong>Load Balancing:</strong> Distribuir o tráfego de rede uniformemente.</span>
+</li>
+<li class="flex items-start gap-sm">
+<span class="material-symbols-outlined text-secondary mt-1">check_circle</span>
+<span><strong>Auto-scaling:</strong> Ajustar o número de instâncias sozinho.</span>
+</li>
+</ul>
+</div>
+</section>
+<!-- Practical Example: Code Block -->
+<section class="space-y-md">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-md text-headline-md text-on-surface">Exemplo Prático: Manifesto Pod</h2>
+<span class="text-xs font-code px-sm py-1 bg-surface-container-highest rounded text-on-surface-variant">YAML CONFIG</span>
+</div>
+<div class="bg-inverse-surface rounded-xl overflow-hidden shadow-2xl border border-primary/20">
+<div class="flex gap-2 px-md py-sm bg-black/30 border-b border-white/5">
+<div class="w-3 h-3 rounded-full bg-red-500"></div>
+<div class="w-3 h-3 rounded-full bg-amber-500"></div>
+<div class="w-3 h-3 rounded-full bg-emerald-500"></div>
+</div>
+<pre class="p-xl font-code text-code text-on-primary-container overflow-x-auto"><code class="block leading-relaxed">
+<span class="text-secondary-fixed-dim">apiVersion</span>: <span class="text-white">v1</span>
+<span class="text-secondary-fixed-dim">kind</span>: <span class="text-white">Pod</span>
+<span class="text-secondary-fixed-dim">metadata</span>:
+  <span class="text-secondary-fixed-dim">name</span>: <span class="text-primary-fixed">meu-primeiro-pod</span>
+<span class="text-secondary-fixed-dim">spec</span>:
+  <span class="text-secondary-fixed-dim">containers</span>:
+  - <span class="text-secondary-fixed-dim">name</span>: <span class="text-white">nginx-container</span>
+    <span class="text-secondary-fixed-dim">image</span>: <span class="text-white">nginx:latest</span></code></pre>
+</div>
+<p class="text-center text-sm text-on-surface-variant italic">Este manifesto define a menor unidade do Kubernetes: o Pod, rodando um servidor Nginx.</p>
+</section>
+<!-- Conclusion -->
+<section class="py-xl">
+<div class="bg-primary p-xl md:p-32 rounded-[3rem] text-center text-on-primary relative overflow-hidden">
+<div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -mr-32 -mt-32"></div>
+<div class="absolute bottom-0 left-0 w-64 h-64 bg-secondary/20 rounded-full blur-3xl -ml-32 -mb-32"></div>
+<div class="relative z-10 max-w-2xl mx-auto space-y-md">
+<h2 class="font-headline-lg text-headline-lg">Impacto no Mercado de TI</h2>
+<p class="font-body-lg text-body-lg opacity-90">
+                        O domínio de contêineres e orquestração não é mais um diferencial, mas um requisito. Empresas que adotam Cloud Native entregam software mais rápido, com maior resiliência e menores custos operacionais.
+                    </p>
+<div class="pt-md">
+<button class="bg-white text-primary px-xl py-md rounded-full font-label-md text-label-md hover:bg-secondary-fixed transition-colors active:scale-95 duration-200">
+                            Iniciar Certificação Cloud Native
+                        </button>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<foote
+</footer>
+<script>
+        // Simple micro-interaction for cards
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-4px)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
+            });
+        });
+    </script>
+</body></html>
